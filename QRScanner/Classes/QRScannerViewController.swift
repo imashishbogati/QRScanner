@@ -7,7 +7,7 @@
 import UIKit
 import Foundation
 import AVFoundation
-public protocol QRScannerDelegate:class {
+public protocol QRScannerDelegate: NSObject {
     func qrScannerDidFail(scanner:QRScannerViewController, error:QRScannerError)
     func qrScannerDidSuccess(scanner:QRScannerViewController, result:String)
 }
@@ -40,6 +40,20 @@ open class QRScannerViewController: UIViewController {
 //        checkPermissions()
         setUpLayout()
         setUpLayers()
+        setUpCloseButton()
+    }
+    
+    // MARK: - Add Close Button to navigation controller
+    public func setUpCloseButton() {
+        let closeButton = UIButton()
+        closeButton.setTitle("Close", for: .normal)
+        closeButton.setTitleColor(.red, for: .normal)
+        closeButton.addTarget(self, action: #selector(didTapCloseButton), for: .touchUpInside)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: closeButton)
+    }
+    
+    @objc public func didTapCloseButton() {
+        dismiss(animated: true)
     }
     
     @objc public func openAlbum(){
